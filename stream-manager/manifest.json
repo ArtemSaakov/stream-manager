@@ -1,0 +1,25 @@
+{
+  "name": "StreamManager",
+  "version": "1.0",
+  "manifest_version": 3,
+  "description": "Never lose track of your media progress",
+  "permissions": ["ActiveTab", "tabs", "idle", "scripting", "storage", "webNavigaion"],
+  "host_permissions": ["*://*.netflix.com/*", "*://*.hulu.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "interface.html",
+    "default_icon": {
+      "16": "public/media_tracker_icon_final_purple_16x16.png",
+      "48": "public/media_tracker_icon_final_purple_48x48.png",
+      "128": "public/media_tracker_icon_final_purple_128x128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.netflix.com/*", "*://*.hulu.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
