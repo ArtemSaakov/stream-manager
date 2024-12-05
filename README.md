@@ -1,1 +1,2 @@
-# here's where i'm starting on the react bits
+# Stream-Manager
+For *all* your stream
