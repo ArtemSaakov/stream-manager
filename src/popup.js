@@ -3,26 +3,30 @@ import { useEffect, useState } from "react";
 const Popup = () => {
   const [trackedMedia, setTrackedMedia] = useState([]);
 
-  //
   useEffect(() => {
-    chrome.storage.local.get("cachedMedia", (result) => {
-      setTrackedMedia(
-        result.cachedMedia || ["Nothing tracked yet. Watch something!"]
-      );
+    // Fetch tracked media from storage
+    chrome.storage.local.get("trackedMedia", (result) => {
+      setTrackedMedia(result.trackedMedia || []);
     });
   }, []);
 
   return (
     <div>
       <h1>Tracked Media</h1>
-      <ul>
-        {trackedMedia.map((media, i) => (
-          <li key={i}>
-            {media.title} on {media.platform}
-            {/*need to include remaining time as well*/}
-          </li>
-        ))}
-      </ul>
+      {trackedMedia.length > 0 ? (
+        <ul>
+          {trackedMedia.map((media, i) => (
+            <li key={i}>
+              <strong>{media.title}</strong> on {media.platform} <br />
+              {/* calculate remaining time at some point */}
+              Remaining:{" "}
+              {Math.max(0, Math.round(media.duration - media.currentTime))}s
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>Nothing tracked yet. Watch something!</p>
+      )}
     </div>
   );
 };
