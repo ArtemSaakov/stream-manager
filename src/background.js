@@ -27,7 +27,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else {
     // Add the new media item to the trackedMedia array
     trackedMedia.push(media);
-
+  }
     // Save updated trackedMedia to storage
     chrome.storage.local.set({ trackedMedia }, () => {
       if (chrome.runtime.lastError) {
