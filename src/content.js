@@ -1,25 +1,25 @@
-/*
-script to fetch Netflix metadata to be displayed in the
-Stream-Manager(TM) extension
-
-tries to gather the metadata from the Netflix video player and send it to
-the background script. observes Netflix's root DOM and monitors it for changes (🤞)
-*/
-
+/**
+ * Fetches metadata from the Netflix video player to be displayed in the Stream-Manager extension.
+ *
+ * @returns {Object|null} The media details if available, otherwise null.
+ */
 const getNetflixMetadata = () => {
-  // variable explanations in order:
-  // the media title, episode title/number, season title, the video player element itself
+  // Variables to store Netflix DOM elements
   const netflixData = {
+    /** @type {HTMLElement|null} */
     title: document.querySelector("h2.ltr-er2d3m"),
+    /** @type {HTMLElement|null} */
     episode: document.querySelector("h3.ltr-xa2yhw"),
+    /** @type {HTMLElement|null} */
     season: document.querySelector("h4.ltr-lwi9ge"),
+    /** @type {HTMLVideoElement|null} */
     videoPlayer: document.querySelector("video"),
   };
 
-  if (netflixData["title"] && netflixData["videoPlayer"]) {
+  if (netflixData.title && netflixData.videoPlayer) {
     const { title, episode, season, videoPlayer } = netflixData;
 
-    // create a workable media object with all relevant data
+    // Create a media object with all relevant data
     const mediaDetails = {
       title: title.textContent.trim(),
       episode: episode?.textContent.trim() || null,
@@ -35,7 +35,9 @@ const getNetflixMetadata = () => {
   return null;
 };
 
-/*sends the mediaDetails to the background script. uses a chrome extension API*/
+/**
+ * Sends the media details to the background script using the Chrome extension API.
+ */
 const sendMetadata = () => {
   const mediaDetails = getNetflixMetadata();
   if (mediaDetails) {
@@ -52,23 +54,25 @@ const sendMetadata = () => {
   }
 };
 
-/*monitors the Netflix DOM for changes/updates
-MutationObserver API watches for changes in the DOM.*/
+/**
+ * Monitors the Netflix DOM for changes and sends updated media details.
+ * Uses MutationObserver API to watch for changes in the DOM.
+ */
 const videoElement = document.querySelector("video");
 if (videoElement && videoElement.parentNode) {
   const observedNode = videoElement.parentNode;
   const observer = new MutationObserver(() => {
-    sendMediaDetails();
+    sendMetadata();
   });
 
-  /*the observing process... targeting the video parent node
-because we just want changes related to the video*/
+  // Start observing changes to the video player's parent node
   observer.observe(observedNode, {
     childList: true,
     subtree: true,
   });
 
-  sendMediaDetails();
+  // Send initial media details
+  sendMetadata();
 } else {
   console.error("Unable to find the video player's parent node.");
 }
