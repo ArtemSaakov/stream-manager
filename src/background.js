@@ -16,19 +16,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     /** @type {Media} */
     const media = message.data;
 
-   // Find the index of the existing media item with the same title and platform
+  /* Find the index of the existing media item with the same title and platform */
    const existingMediaIndex = trackedMedia.findIndex(
     (item) => item.title === media.title && item.platform === media.platform
   );
 
   if (existingMediaIndex >= 0) {
-    // Update the existing media item
+    /* Update the existing media item */
     trackedMedia[existingMediaIndex] = media;
   } else {
-    // Add the new media item to the trackedMedia array
+    /* Add the new media item to the trackedMedia array */
     trackedMedia.push(media);
   }
-    // Save updated trackedMedia to storage
+    /* Save updated trackedMedia to storage */
     chrome.storage.local.set({ trackedMedia }, () => {
       if (chrome.runtime.lastError) {
         console.log("Failed to update trackedMedia in storage:", chrome.runtime.lastError);

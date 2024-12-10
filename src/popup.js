@@ -17,7 +17,8 @@ const Popup = () => {
   const [trackedMedia, setTrackedMedia] = useState([]);
 
   useEffect(() => {
-    {/* Fetch tracked media from local storage */ }
+    {/* Fetch tracked media from local storage with useEffect only on initial render
+    on so as to prevent re-fetching on any re-renders */ }
     chrome.storage.local.get("trackedMedia", (result) => {
       setTrackedMedia(result.trackedMedia || []);
     });

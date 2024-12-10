@@ -3,7 +3,7 @@
   "version": "1.0",
   "manifest_version": 3,
   "description": "Never lose track of your media progress",
-  "permissions": ["ActiveTab", "tabs", "idle", "scripting", "storage", "webNavigaion"],
+  "permissions": ["ActiveTab", "tabs", "idle", "scripting", "storage", "webNavigation"],
   "host_permissions": ["*://*.netflix.com/*", "*://*.hulu.com/*"],
   "background": {
     "service_worker": "background.js"
